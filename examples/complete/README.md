@@ -1,5 +1,5 @@
 <!-- BEGIN_TF_DOCS -->
-# Fibre-Channel Pool Example
+# Virtual Media Policy Example
 
 To run this example you need to execute:
 
@@ -13,21 +13,25 @@ Note that this example will create resources. Resources can be destroyed with `t
 
 ### main.tf
 ```hcl
-module "wwpn_pool" {
-  source  = "scotttyso/pools-fc/intersight"
+module "vmedia_policy" {
+  source  = "terraform-cisco-modules/policies-virtual-media/intersight"
   version = ">= 1.0.1"
 
-  assignment_order = "sequential"
-  description      = "Demo WWPN Pool"
-  id_blocks = [
+  add_virtual_media = [
     {
-      from = "0:00:00:25:B5:00:00:00"
-      size = 1000
+      device_type   = "cdd"
+      file_location = "http://198.18.1.10/mount.iso"
+      mount_options = "noauto"
+      name          = "http_server"
+      protocol      = "http"
     }
   ]
-  name         = "default"
-  organization = "default"
-  pool_purpose = "WWPN"
+  description                     = "default Virtual Media Policy."
+  enable_virtual_media            = true
+  enable_low_power_usb            = true
+  enable_virtual_media_encryption = true
+  name                            = "default"
+  organization                    = "default"
 }
 
 ```
