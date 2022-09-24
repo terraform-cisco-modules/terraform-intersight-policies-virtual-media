@@ -36,28 +36,6 @@ data "intersight_server_profile_template" "templates" {
 # GUI Location: Policies > Create Policy > Virtual Media
 #__________________________________________________________________
 
-locals {
-  add_virtual_media = {
-    for v in var.add_virtual_media : v.name => {
-      authentication_protocol = v.authentication_protocol != null ? v.authentication_protocol : "none"
-      device_type             = v.device_type != null ? v.device_type : "cdd"
-      file_location           = v.file_location
-      mount_options           = v.mount_options != null ? v.mount_options : ""
-      name                    = v.name
-      password                = v.password != null ? v.password : 0
-      protocol                = v.protocol != null ? v.protocol : "nfs"
-      username                = v.username != null ? v.username : ""
-    }
-  }
-
-  profiles = {
-    for v in var.profiles : v.name => {
-      name        = v.name
-      object_type = v.object_type != null ? v.object_type : "server.Profile"
-    }
-  }
-}
-
 resource "intersight_vmedia_policy" "virtual_media" {
   depends_on = [
     data.intersight_server_profile.profiles,
@@ -73,7 +51,7 @@ resource "intersight_vmedia_policy" "virtual_media" {
     object_type = "organization.Organization"
   }
   dynamic "mappings" {
-    for_each = local.add_virtual_media
+    for_each = { for v in var.add_virtual_media : v.name => v }
     content {
       additional_properties   = ""
       authentication_protocol = mappings.value.authentication_protocol

@@ -1,7 +1,3 @@
-terraform {
-  experiments = [module_variable_optional_attrs]
-}
-
 #____________________________________________________________
 #
 # vMedia Policy Variables Section.
@@ -55,14 +51,14 @@ variable "add_virtual_media" {
   EOT
   type = list(object(
     {
-      authentication_protocol = optional(string)
-      device_type             = optional(string)
+      authentication_protocol = optional(string, "none")
+      device_type             = optional(string, "cdd")
       file_location           = string
-      mount_options           = optional(string)
+      mount_options           = optional(string, "")
       name                    = string
-      password                = optional(number)
-      protocol                = optional(string)
-      username                = optional(string)
+      password                = optional(number, 0)
+      protocol                = optional(string, "nfs")
+      username                = optional(string, "")
     }
   ))
 }
@@ -73,15 +69,15 @@ variable "description" {
   type        = string
 }
 
-variable "enable_virtual_media" {
-  default     = true
-  description = "Flag to Enable or Disable the Policy."
-  type        = bool
-}
-
 variable "enable_low_power_usb" {
   default     = false
   description = "If enabled, the virtual drives appear on the boot selection menu after mapping the image and rebooting the host."
+  type        = bool
+}
+
+variable "enable_virtual_media" {
+  default     = true
+  description = "Flag to Enable or Disable the Policy."
   type        = bool
 }
 
@@ -115,7 +111,7 @@ variable "profiles" {
   type = list(object(
     {
       moid        = string
-      object_type = optional(string)
+      object_type = optional(string, "server.Profile")
     }
   ))
 }
