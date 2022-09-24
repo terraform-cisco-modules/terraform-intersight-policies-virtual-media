@@ -33,7 +33,6 @@ module "vmedia_policy" {
   name                            = "default"
   organization                    = "default"
 }
-
 ```
 
 ### variables.tf
