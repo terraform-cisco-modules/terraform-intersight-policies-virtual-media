@@ -1,4 +1,4 @@
-module "vmedia_policy" {
+module "virtual_media" {
   source  = "terraform-cisco-modules/policies-virtual-media/intersight"
   version = ">= 1.0.1"
 
