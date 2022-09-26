@@ -82,7 +82,7 @@ variable "enable_virtual_media" {
 }
 
 variable "enable_virtual_media_encryption" {
-  default     = false
+  default     = true
   description = "If enabled, allows encryption of all Virtual Media communications."
   type        = bool
 }
